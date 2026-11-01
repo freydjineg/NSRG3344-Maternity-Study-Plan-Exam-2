@@ -181,6 +181,16 @@ dialog::backdrop{background:rgba(20,22,36,.55)}.dlg{padding:1rem 1.2rem;max-heig
 .sbtn.mark{background:var(--teal);color:#fff;border-color:var(--teal)}.sbtn.mark.on{background:var(--okSoft);color:var(--ok);border-color:#9CC8B1}
 .sbtn.close{background:var(--plum);color:#fff;border-color:var(--plum)}
 #sheetFrame{flex:1;width:100%;border:0;background:var(--paper)}
+.smb{position:absolute;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;display:flex;align-items:flex-end;gap:8px;max-width:min(360px,calc(100vw - 100px));pointer-events:none}
+.smb>*{pointer-events:auto}
+.smb-av{background:radial-gradient(circle at 50% 45%,#FFFCF4 0%,#F7EDD3 62%,rgba(247,237,211,0) 70%);border:none;width:104px;height:104px;padding:0;cursor:pointer;flex-shrink:0;filter:drop-shadow(0 6px 10px rgba(38,47,74,.28))}
+.smb-av svg{display:block;width:100%;height:100%}
+.smb-card{background:#FFFCF4;border:2px solid #D6B25A;border-radius:16px;padding:.55rem .8rem .6rem;box-shadow:0 6px 18px rgba(38,47,74,.18);font-size:.9rem;color:#232434;position:relative;transition:opacity .3s,transform .3s}
+.smb-card b{color:#384466}.smb-count{display:block;font-weight:800;color:#5A3C62;font-size:.86rem;margin-top:.15rem}
+.smb-x{position:absolute;top:2px;right:6px;background:none;border:none;color:#5F6177;font-size:1rem;cursor:pointer;padding:2px 4px}
+.smb.min .smb-card{opacity:0;transform:translateY(8px);visibility:hidden}
+.study{position:fixed}.study .sheetwrap{position:relative;flex:1;display:flex}
+@media(max-width:640px){.smb-av{width:72px;height:72px}.smb-card{font-size:.84rem}}
 .readlist{list-style:none;padding:0;margin:.3rem 0;max-width:none}
 .readlist li{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem;align-items:center;padding:.35rem 0;border-top:1px dashed var(--lineL)}
 .readlist li:first-child{border-top:none}
@@ -200,7 +210,7 @@ dialog::backdrop{background:rgba(20,22,36,.55)}.dlg{padding:1rem 1.2rem;max-heig
 <nav class="main" aria-label="Main"><a href="#today" data-v="today">Today</a><a href="#plan" data-v="plan">Plan</a><a href="#library" data-v="library">Topic Library</a><a href="#review" data-v="review">Review Mistakes</a></nav></header>
 <main id="app" tabindex="-1"></main>
 <footer><p><a href="#data">Your data</a><a href="#about">About the questions</a></p><p id="footNote"></p></footer>
-<div class="study" id="study" hidden role="dialog" aria-modal="true" aria-label="Study mode: full study sheet"><div id="smBar"></div><iframe id="sheetFrame" title="Full NRSG 3344 Exam 2 study sheet"></iframe></div>
+<div class="study" id="study" hidden role="dialog" aria-modal="true" aria-label="Study mode: full study sheet"><div id="smBar"></div><div class="sheetwrap"><iframe id="sheetFrame" title="Full NRSG 3344 Exam 2 study sheet"></iframe><div class="smb" id="smBuddy" role="complementary" aria-label="Study buddy"><button class="smb-av" id="smbAv" aria-label="Study buddy studying with you. Tap for encouragement."></button><div class="smb-card" id="smbCard" aria-live="polite"><button class="smb-x" id="smbX" aria-label="Hide message">✕</button><b>Studying with you 📚</b><br><span id="smbMsg"></span><span class="smb-count" id="smbCount"></span></div></div></div></div>
 <dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
 <div class="toast" id="toast" role="status" hidden></div>
 <script type="text/plain" id="sheetData"><!DOCTYPE html>
@@ -693,21 +703,7 @@ svg.quiet .cu-v{display:none}
 .lb-box svg{width:min(900px,90vw);height:auto}
 .lb-cap{color:#F6E7AE;font-size:.95rem;line-height:1.5;max-width:min(1100px,96vw);text-align:center;margin-top:.7rem}
 .lb-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);right:16px;background:#F6E7AE;color:#262F4A;border:none;border-radius:50%;width:42px;height:42px;font-size:1.3rem;font-weight:800;cursor:pointer}
-/* ===== Study buddy (studying with you) ===== */
-.sb{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:900;display:flex;align-items:flex-end;gap:8px;max-width:min(360px,calc(100vw - 100px))}
-.sb-av{background:radial-gradient(circle at 50% 45%,#FFFCF4 0%,#F7EDD3 62%,rgba(247,237,211,0) 70%);border:none;width:104px;height:104px;padding:0;cursor:pointer;flex-shrink:0;filter:drop-shadow(0 6px 10px rgba(38,47,74,.28))}
-.sb-av svg{display:block;width:100%;height:100%}
-.sb-card{background:#FFFCF4;border:2px solid #D6B25A;border-radius:16px;padding:.55rem .8rem .6rem;box-shadow:0 6px 18px rgba(38,47,74,.18);font-size:.9rem;color:#232434;position:relative}
-.sb-card b{color:#384466}
-.sb-count{display:block;font-weight:800;color:#5A3C62;font-size:.86rem;margin-top:.15rem}
-.sb-x{position:absolute;top:2px;right:6px;background:none;border:none;color:#5F6177;font-size:1rem;cursor:pointer;padding:2px 4px}
-.sb .sb-card{transition:opacity .3s,transform .3s}
-.sb.min .sb-card{opacity:0;transform:translateY(8px);pointer-events:none;visibility:hidden}
-.b-pencil{transform-box:fill-box;transform-origin:50% 100%;animation:sbw 1.6s ease-in-out infinite}
-@keyframes sbw{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg) translateX(-3px)}}
-@media(prefers-reduced-motion:reduce){.b-pencil{animation:none}}
-@media(max-width:640px){.sb-av{width:72px;height:72px}.sb-card{font-size:.84rem}}
-@media print{.sb{display:none}}
+
 @media(max-width:640px){.hdr h1{font-size:1.7rem}.panel{padding:1.35rem .75rem 8rem}.acc-body{padding:1rem}.match-grid{gap:.4rem}}
 @media print{.nav,.float-search-btn,.to-top-btn,.ps-standalone-wrap{display:none}.panel{display:block!important}}
 </style>
@@ -2402,7 +2398,6 @@ svg.quiet .cu-v{display:none}
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Search">
 <div class="search-box"><div class="search-input-wrap"><input type="text" id="searchInput" placeholder="Search a topic or look up a term (e.g., REEDA, tachysystole, LATCH)…" aria-label="Search"><button class="search-close" id="searchCloseBtn">Close</button></div>
 <div class="search-results" id="searchResults"></div></div></div>
-<div class="sb" id="studyBuddy" role="complementary" aria-label="Study buddy"><button class="sb-av" id="sbAv" aria-label="Study buddy studying with you. Tap for encouragement."></button><div class="sb-card" id="sbCard" aria-live="polite"><button class="sb-x" id="sbX" aria-label="Hide message">✕</button><b>Studying with you 📚</b><br><span id="sbMsg"></span><span class="sb-count" id="sbCount"></span></div></div>
 <div class="lb" id="lightbox" role="dialog" aria-label="Enlarged image" onclick="lbClose()"><button class="lb-close" aria-label="Close enlarged image" onclick="lbClose()">✕</button><div class="lb-box" id="lbBox" onclick="event.stopPropagation()"></div><div class="lb-cap" id="lbCap"></div></div>
 <div class="ps-modal-overlay" id="psOverlay" role="dialog" aria-label="Pit stop quiz"><div class="ps-modal" id="psModal"></div></div>
 <script>
@@ -2660,81 +2655,9 @@ document.querySelectorAll('#tab-m3 figure img, #tab-m4 figure img, #tab-m3 figur
   el.addEventListener('click',function(){lbOpen(el);});el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();lbOpen(el);}});
   var cap=el.closest('figure')&&el.closest('figure').querySelector('figcaption');if(cap&&!cap.querySelector('.zoom-hint'))cap.insertAdjacentHTML('beforeend','<span class="zoom-hint">🔍 Tap the image to enlarge</span>');});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')lbClose();});
-/* ============ STUDY BUDDY ============ */
-(function(){var EXAM=[2026,11,6];var MSG=['One section at a time. We’ve got this!','Read it, close it, then explain it out loud.','Every pit stop miss teaches you something.','Water and a stretch after this section!','Name the clue, then the priority. You know this.','Proud of you for showing up today.','Fundus firm? Bladder empty? Thinking like a nurse!','Protect your sleep. Tired brains forget.'];var i=Math.floor(Math.random()*MSG.length);
-  var t=new Date();var a=Date.UTC(t.getFullYear(),t.getMonth(),t.getDate()),e=Date.UTC(EXAM[0],EXAM[1]-1,EXAM[2]);var n=Math.round((e-a)/864e5);
-  var cnt=n>1?'⏳ '+n+' days until Exam 2 (Fri, Nov 6)':n===1?'⏳ Exam 2 is tomorrow. Light review, good sleep.':n===0?'🌟 Exam day! You’ve got this.':'🎉 Exam 2 is done. So proud of you!';
-  var sb=document.getElementById('studyBuddy');if(!sb)return;
-  document.getElementById('sbAv').innerHTML=buddySVG({pose:'study',eyes:'down',mouth:'smile',size:84,label:'Study buddy reading a book alongside you'});
-  document.getElementById('sbMsg').textContent=MSG[i];document.getElementById('sbCount').textContent=cnt;
-  var hideT=null;function show(ms){sb.classList.remove('min');clearTimeout(hideT);hideT=setTimeout(function(){sb.classList.add('min');},ms||7000);}
-  document.getElementById('sbAv').onclick=function(){if(sb.classList.contains('min')){show(9000);}else{i++;document.getElementById('sbMsg').textContent=MSG[i%MSG.length];show(9000);}};
-  document.getElementById('sbX').onclick=function(){clearTimeout(hideT);sb.classList.add('min');};
-  show(7000);})();
 /* ============ INIT ============ */
 buildIndex();renderDrugs('all');wrapTerms();
 try{var t=localStorage.getItem('ob_tab');if(t&&document.getElementById('tab-'+t))showTab(t,true);}catch(e){}
-
-/* Study buddy avatar: cute Black girl with glasses, rust beanie, big curly hair (inspired by the user's Memoji) */
-function buddySVG(o){
-  o=Object.assign({pose:'wave',eyes:'wink',mouth:'grin',sign:'',size:200,label:'Your study buddy'},o||{});
-  var SK='#8A5638',SK2='#A86E4A',SKD='#6E4128',HAIR='#231712',HAIR2='#3a2820',HAT='#C46A2B',HAT2='#A55520',HAT3='#D98544',GL='#B9853F',TOP='#3A6A6B',TOP2='#2F5859';
-  var s='<svg class="buddy" viewBox="0 0 240 240" width="'+o.size+'" height="'+o.size+'" role="img" aria-label="'+o.label+'">';
-  s+='<defs><radialGradient id="bFace" cx="45%" cy="38%" r="70%"><stop offset="0" stop-color="'+SK2+'"/><stop offset=".7" stop-color="'+SK+'"/><stop offset="1" stop-color="'+SKD+'"/></radialGradient>'+
-     '<radialGradient id="bHat" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="'+HAT3+'"/><stop offset=".6" stop-color="'+HAT+'"/><stop offset="1" stop-color="'+HAT2+'"/></radialGradient>'+
-     '<radialGradient id="bHair" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="'+HAIR2+'"/><stop offset="1" stop-color="'+HAIR+'"/></radialGradient></defs>';
-  // hair volume behind
-  var curls=[[60,120,30],[52,150,30],[62,180,28],[88,196,26],[180,120,30],[188,150,30],[178,180,28],[152,196,26],[70,95,26],[170,95,26],[120,200,24]];
-  s+='<g fill="url(#bHair)">'+curls.map(function(c){return '<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+c[2]+'"/>';}).join('')+'<ellipse cx="120" cy="140" rx="70" ry="66"/></g>';
-  // body / shirt
-  s+='<path d="M58 240 C60 206 84 190 120 190 C156 190 180 206 182 240 Z" fill="'+TOP+'"/><path d="M104 190 Q120 206 136 190" fill="none" stroke="'+TOP2+'" stroke-width="5" stroke-linecap="round"/>';
-  s+='<rect x="108" y="170" width="24" height="24" rx="10" fill="'+SKD+'"/>';
-  // face
-  s+='<ellipse cx="120" cy="132" rx="47" ry="52" fill="url(#bFace)"/>';
-  // curls framing face
-  s+='<g fill="'+HAIR+'"><circle cx="76" cy="108" r="13"/><circle cx="164" cy="108" r="13"/><circle cx="72" cy="128" r="11"/><circle cx="168" cy="128" r="11"/><circle cx="74" cy="146" r="9"/><circle cx="166" cy="146" r="9"/></g>';
-  // beanie
-  s+='<g class="b-hat"><path d="M70 100 C66 62 94 44 121 44 C149 44 176 62 172 100 Z" fill="url(#bHat)"/>'+
-     '<path d="M66 92 Q120 80 176 92 L178 106 Q120 94 64 106 Z" fill="'+HAT2+'"/>';
-  for(var x=72;x<=172;x+=8){s+='<path d="M'+x+' '+(91+Math.abs(x-120)*0.05)+' l1 11" stroke="'+HAT+'" stroke-width="2" opacity=".7"/>';}
-  s+='<path d="M98 58 Q112 52 128 54" stroke="#E9A066" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/></g>';
-  // brows
-  s+='<path d="M91 112 Q101 106 111 110" stroke="'+HAIR+'" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M130 108 Q140 104 150 110" stroke="'+HAIR+'" stroke-width="3.2" fill="none" stroke-linecap="round"/>';
-  // eyes
-  var eyeOpen=function(cx){return '<g class="b-eye"><ellipse cx="'+cx+'" cy="132" rx="8" ry="9" fill="#fff"/><ellipse cx="'+cx+'" cy="133" rx="5.8" ry="6.6" fill="#3b2316"/><circle cx="'+cx+'" cy="133.5" r="3" fill="#120a07"/><circle cx="'+(cx+2.2)+'" cy="130.2" r="2" fill="#fff"/><path d="M'+(cx-8.5)+' 125 q8.5 -6 17 0" stroke="#1a100c" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>';};
-  var eyeDown=function(cx){return '<path d="M'+(cx-6)+' 130 q6 5 12 0" stroke="#1a100c" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M'+(cx-6)+' 130 l-2 2 M'+(cx+6)+' 130 l2 2" stroke="#1a100c" stroke-width="1.6"/>';};
-  var wink='<path d="M132 134 q8 -7 16 0" stroke="#1a100c" stroke-width="3" fill="none" stroke-linecap="round"/>';
-  if(o.eyes==='down')s+=eyeDown(101)+eyeDown(140);
-  else if(o.eyes==='happy')s+='<path d="M95 132 q6 -6 12 0 M134 132 q6 -6 12 0" stroke="#1a100c" stroke-width="2.8" fill="none" stroke-linecap="round"/>';
-  else s+=eyeOpen(101)+(o.eyes==='wink'?wink:eyeOpen(140));
-  // glasses
-  s+='<g fill="rgba(255,255,255,.12)" stroke="'+GL+'" stroke-width="3.4"><circle cx="101" cy="132" r="17"/><circle cx="140" cy="132" r="17"/></g><path d="M118 130 Q120.5 126 123 130" stroke="'+GL+'" stroke-width="3" fill="none"/><path d="M84 129 l-10 -3 M157 129 l10 -3" stroke="'+GL+'" stroke-width="3"/>';
-  // nose, cheeks, mouth
-  s+='<path d="M117 141 q3 9 -2 11 M123 141 q1 6 4 9" stroke="'+SKD+'" stroke-width="2.2" fill="none" stroke-linecap="round"/>';
-  s+='<ellipse cx="92" cy="152" rx="8" ry="5" fill="#E07A6E" opacity=".35"/><ellipse cx="150" cy="152" rx="8" ry="5" fill="#E07A6E" opacity=".35"/>';
-  if(o.mouth==='grin')s+='<path d="M104 158 Q121 178 140 158 Q121 166 104 158Z" fill="#5a1f22"/><path d="M107 159 Q121 165 137 159 L136 162 Q121 167 108 162Z" fill="#fff"/><path d="M114 168 Q121 172 129 168" stroke="#d9707a" stroke-width="3" fill="none" stroke-linecap="round"/>';
-  else if(o.mouth==='o')s+='<ellipse cx="121" cy="164" rx="7" ry="8" fill="#5a1f22"/>';
-  else s+='<path d="M106 160 Q121 172 138 160" stroke="#5a1f22" stroke-width="3.2" fill="none" stroke-linecap="round"/>';
-  // earrings
-  s+='<circle cx="76" cy="150" r="4" fill="none" stroke="#D6B25A" stroke-width="2.4"/><circle cx="164" cy="150" r="4" fill="none" stroke="#D6B25A" stroke-width="2.4"/>';
-  // poses
-  var hand=function(x,y){return '<circle cx="'+x+'" cy="'+y+'" r="11" fill="'+SK+'" stroke="'+SKD+'" stroke-width="1.5"/>';};
-  if(o.pose==='sign'){
-    s+='<g class="b-sign"><rect x="64" y="186" width="112" height="50" rx="10" fill="#FFFCF4" stroke="#A97C27" stroke-width="3"/><text x="120" y="'+(o.sign2?208:219)+'" text-anchor="middle" font-family="Georgia,serif" font-size="'+(o.sign.length>10?15:22)+'" font-weight="700" fill="#384466">'+o.sign+'</text>'+(o.sign2?'<text x="120" y="227" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#5A3C62">'+o.sign2+'</text>':'')+hand(66,198)+hand(174,198)+'</g>';
-  } else if(o.pose==='study'){
-    s+='<g><path d="M70 214 L120 204 L120 238 L70 240 Z" fill="#FFFCF4" stroke="#A97C27" stroke-width="2"/><path d="M170 214 L120 204 L120 238 L170 240 Z" fill="#F7EDD3" stroke="#A97C27" stroke-width="2"/>'+
-       '<path d="M80 216 l30 -5 M80 224 l30 -5 M130 211 l30 5 M130 219 l30 5" stroke="#93B7C2" stroke-width="2"/>'+hand(70,224)+hand(170,224)+
-       '<g class="b-pencil"><rect x="172" y="186" width="8" height="34" rx="2" fill="#D6B25A" transform="rotate(25 176 203)"/><path d="M168 218 l6 10 l2 -12z" fill="#5a1f22" transform="rotate(25 176 203)"/></g></g>';
-  } else if(o.pose==='celebrate'){
-    s+='<path d="M70 200 L40 150" stroke="'+TOP+'" stroke-width="18" stroke-linecap="round"/><path d="M170 200 L200 150" stroke="'+TOP+'" stroke-width="18" stroke-linecap="round"/>'+hand(38,144)+hand(202,144);
-    s+='<g class="b-confetti">'+[[30,40,'#D6B25A'],[205,52,'#498496'],[20,90,'#A23A4C'],[215,98,'#5A3C62'],[50,20,'#3A6A6B'],[190,22,'#D6B25A']].map(function(c){return '<rect x="'+c[0]+'" y="'+c[1]+'" width="8" height="12" rx="2" fill="'+c[2]+'" transform="rotate(30 '+c[0]+' '+c[1]+')"/>';}).join('')+'</g>';
-  } else if(o.pose==='tea'){
-    s+='<g><rect x="132" y="200" width="30" height="32" rx="6" fill="#FFFCF4" stroke="#A97C27" stroke-width="2.5"/><path d="M162 208 q12 0 12 9 q0 9 -12 9" fill="none" stroke="#A97C27" stroke-width="2.5"/><path d="M140 194 q-4 -8 2 -14 M150 194 q-4 -8 2 -14" stroke="#93B7C2" stroke-width="2.4" fill="none" class="b-steam"/>'+hand(132,218)+'</g>';
-  } else { // wave
-    s+='<path d="M176 206 L204 168" stroke="'+TOP+'" stroke-width="18" stroke-linecap="round"/><g class="b-wave">'+hand(206,160)+'</g>';
-  }
-  return s+'</svg>';
-}
 
 /* ===== Animated close-ups (SMIL; started with beginElement) ===== */
 function AN(tag,attrs,d){var s='<'+tag+' begin="indefinite" fill="freeze" data-d="'+d+'"';for(var k in attrs)s+=' '+k+'="'+attrs[k]+'"';return s+'/>';}
@@ -3266,11 +3189,23 @@ function stopTimer(){}
 var SM={day:null,list:[],i:0,loaded:false,pending:null};
 function sheetList(dayKey){if(dayKey&&PLAN[dayKey]&&PLAN[dayKey].secs.length)return PLAN[dayKey].secs.slice();return C.sections.map(function(s){return s.id;});}
 function openSheet(id,dayKey){SM.day=dayKey;SM.list=sheetList(dayKey);if(SM.list.indexOf(id)<0){SM.day=null;SM.list=sheetList(null);}SM.i=Math.max(0,SM.list.indexOf(id));
-  var ov=$('study');ov.hidden=false;document.body.style.overflow='hidden';paintBar();
+  var ov=$('study');ov.hidden=false;document.body.style.overflow='hidden';paintBar();smbInit();
   var fr=$('sheetFrame');if(!SM.loaded){SM.pending=SM.list[SM.i];var raw=$('sheetData').textContent.split('%%ENDSCRIPT%%').join('</'+'script');fr.onload=function(){SM.loaded=true;try{var d=fr.contentDocument;var st=d.createElement('style');st.textContent='.hdr{display:none!important}#studyBuddy{display:none!important}';d.head.appendChild(st);}catch(e){}if(SM.pending){var p=SM.pending;SM.pending=null;setTimeout(function(){jumpTo(p);},60);}};fr.srcdoc=raw;}
   else jumpTo(SM.list[SM.i]);
   setTimeout(function(){var c=$('smClose');if(c)c.focus();},50);}
 function jumpTo(id){var fr=$('sheetFrame');try{var w=fr.contentWindow;w.showTab(id.split('.')[0]==='3'?'m3':'m4',true);var el=w.document.getElementById('s'+id.replace('.','-'));if(el){var nav=w.document.querySelector('.nav');var off=(nav?nav.offsetHeight:0)+8;w.scrollTo(0,el.getBoundingClientRect().top+w.scrollY-off);}}catch(e){}}
+
+/* floating study buddy over the study sheet (study plan only) */
+var SMB={i:Math.floor(Math.random()*7),t:null};
+var SMB_MSG=['One section at a time. We’ve got this!','Read it, then say it out loud.','Every Pit Stop miss teaches you something.','Water and a stretch after this section!','Name the clue, then the priority. You know this.','Proud of you for showing up today.','Fundus firm? Bladder empty? Thinking like a nurse!'];
+function smbShow(ms){var w=$('smBuddy');w.classList.remove('min');clearTimeout(SMB.t);SMB.t=setTimeout(function(){w.classList.add('min');},ms||7000);}
+function smbInit(){var n=diff(today(),S.examDate);
+  $('smbCount').textContent=n>1?'⏳ '+n+' days until Exam 2 ('+fmtS(S.examDate)+')':n===1?'⏳ Exam 2 is tomorrow. Light review, good sleep.':n===0?'🌟 Exam day! You’ve got this.':'🎉 Exam 2 is done. So proud of you!';
+  $('smbMsg').textContent=SMB_MSG[SMB.i%SMB_MSG.length];
+  if(!$('smbAv').firstChild)$('smbAv').innerHTML=buddySVG({pose:'study',eyes:'down',mouth:'smile',size:104,label:'Study buddy reading a book alongside you'});
+  $('smbAv').onclick=function(){if(!$('smBuddy').classList.contains('min')){SMB.i++;$('smbMsg').textContent=SMB_MSG[SMB.i%SMB_MSG.length];}smbShow(9000);};
+  $('smbX').onclick=function(){clearTimeout(SMB.t);$('smBuddy').classList.add('min');};
+  smbShow(7000);}
 function closeSheet(){$('study').hidden=true;document.body.style.overflow='';route();}
 function paintBar(){var id=SM.list[SM.i],d=SM.day?PLAN[SM.day]:null;var nRead=SM.list.filter(function(x){return S.read[x];}).length;
   var h='<div class="sb-l">'+buddySVG({pose:'study',eyes:'down',mouth:'smile',size:46,label:'Study buddy reading with you'})+'<div><div class="sb-t">'+(d?'D'+d.n+' Learn · section '+(SM.i+1)+' of '+SM.list.length:'Full study sheet')+'</div><div class="sb-s">'+(d?nRead+' of '+SM.list.length+' marked read':'Jump to any section')+'</div></div></div>';
